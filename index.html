@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+    <title>One Sentence</title>
+    <link href="css/index.css" rel="stylesheet">
+    <script>
+        function set_link_click(bool){
+            let hitokoto_label = document.getElementById("hitokoto_label")
+            let author_label = document.getElementById("author_label")
+            hitokoto_label.style.pointerEvents = bool ? "visible" : "none"
+            author_label.style.pointerEvents = bool ? "visible" : "none"
+        }
+
+        function is_link_click(){
+            const link_option_checkbox = document.getElementById("link_option_checkbox")
+            return link_option_checkbox.checked
+        }
+
+        function check_color_hex3(color){
+            let result = color.match(/^#[0-9a-fA-F]{6}$/)
+            if(result != null) result = result[0]
+            return result == color
+        }
+        function check_color_hex4(color){
+            let result = color.match(/^#[0-9a-fA-F]{8}$/)
+            if(result != null) result = result[0]
+            return result == color
+        }
+        // 自己保证color是hex3或hex4，这里不管
+        function convert_to_hex3(color){
+            if(check_color_hex4(color)){
+                return color.substring(0, 7)
+            }
+            return color
+        }
+    </script>
+</head>
+<body>
+    <span id = "content_container">
+        <span id = "menu_container">
+            <div id = "setting_container">
+                <div id = "select_container">
+                    <label>类型: </label>
+                    <select id = "hitokoto_type_select"></select>
+                </div>
+                <div id = "link_container">
+                    <label>是否跳转链接: </label>
+                    <input id="link_option_checkbox" type="checkbox">
+                </div>
+                <div id = "bg_color_container">
+                    <label>背景色: </label>
+                    <input id="bg_color_select" class = "ColorInput" type="color" data-before_value = "#90EE90" value="#90EE90">
+                    <input id="bg_color_input" type="text" placeholder="#90EE904C" data-before_value = "#90EE904C" value="#90EE904C" spellcheck="false">
+                </div>
+                <div id = "color_container">
+                    <label>文本色: </label>
+                    <input id="color_select" class = "ColorInput" type="color" data-before_value = "#000000" value="#000000">
+                    <input id="color_input" type="text" placeholder="#000000" data-before_value = "#000000" value="#000000" spellcheck="false">
+                </div>
+            </div>
+            <label id="menu">☰</label>
+        </span>
+
+        <span id = "text_content_container">
+            <a id = "hitokoto_label" href = "https://hitokoto.cn/" target="_blank">一言加载中...</a>
+            <a id = "author_label" href = "https://hitokoto.cn/" target="_blank"></a>
+        </span>
+    </span>
+
+    <script type="module">
+        // 定义基础 URL 和参数
+        let host
+        try{
+            let pre_path = window.location.pathname.match(/(.*)\/index.html/)[1]
+            host = window.location.origin + pre_path
+        }catch(error){
+            host = ""
+        }
+        let total_num = 0
+        function add_script(path, callback){
+            total_num = total_num + 1
+            if(host != "" && !path.startsWith("/")){ path = "/" + path }
+            let script_element = document.createElement("script")
+            script_element.src = host + path
+            script_element.onload = callback
+            document.body.appendChild(script_element)
+        }
+        let resolve
+        let reject
+        const promise = new Promise((_resolve, _reject) => {
+            resolve = _resolve
+            reject = _resolve
+        });
+
+        let load_num = 1
+        function onload(){
+            load_num = load_num + 1
+            if(load_num == total_num){
+                resolve()
+            }
+        }
+
+        // 这里这么写只是为了根据index的启动自动设置相同的协议和域
+        add_script("config.js", onload)
+        add_script("src/get_remote_res.js", onload)
+        add_script("src/index.js", onload)
+        add_script("src/siyuan_api.js", onload)
+
+        onload() // load_num初始1，即使上面同一帧立马执行也不会调用resolve，这里调一次抵消初始1
+        promise.then(() => {
+            add_script("launcher.js")
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "OneSentence",
+  "author": "Gbg",
+  "url": "",
+  "version": "0.0.1",
+  "minAppVersion": "3.1.9",
+  "displayName": {
+    "default": "one sentence",
+    "zh_CN": "一言"
+  },
+  "description": {
+    "default": "This is a random quote widget",
+    "zh_CN": "这是一个随机语录挂件"
+  },
+  "readme": {
+    "default": "README.md"
+  },
+  "funding": {
+    "openCollective": "",
+    "patreon": "",
+    "github": "",
+    "custom": []
+  },
+  "keywords": [
+    "一言", "语录", "随机"
+  ]
+}
+

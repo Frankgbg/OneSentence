@@ -1,0 +1,110 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+html {
+    background-color: rgba(144, 238, 144, 0.3);
+}
+
+span {
+    display: inline-block;
+}
+
+#setting_container input {
+/*    background-color: rgba(255, 0, 0, 0.5);*/
+}
+
+/*最高级容器*/
+#content_container {
+    --padding: 5px;
+    padding: var(--padding);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+}
+#content_container label, a {
+    font-size: 20px;
+}
+a {
+    text-decoration: none; /* 默认不显示下划线 */
+    color: black;         /* 设置链接颜色 */
+    pointer-events: none;
+}
+
+a:hover {
+    text-decoration: underline; /* 鼠标悬停时显示下划线 */
+}
+
+/*主要文本容器*/
+#text_content_container{
+    flex-grow: 1;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#author_label {
+    align-self: flex-end;
+}
+
+
+
+/*菜单容器*/
+#menu_container {
+    position: relative;
+}
+/*菜单按钮*/
+#menu {
+    cursor: pointer;
+}
+
+/*选择器*/
+#setting_container {
+    position: absolute;
+    top: 25px;
+    left: 0px;
+    z-index: 1;
+
+    display: none;
+    flex-direction: column;
+/*    justify-content: center;*/
+    background-color: rgb(241, 241, 241);
+    border: 2px solid rgba(211, 211, 211, 1);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+#setting_container label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/*类型*/
+#select_container {
+    width: 122px;
+}
+#hitokoto_type_select {
+    font-size: 16px;
+}
+
+/*跳转超链接*/
+#link_option_checkbox {
+    transform: scale(1.5);
+}
+
+/*颜色*/
+.ColorInput {
+    transform: translateY(1px);
+}
+#bg_color_container,
+#color_container {
+    width: 170px;
+}
+
+#bg_color_input,
+#color_input {
+    width: 64px;
+}
