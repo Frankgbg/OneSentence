@@ -8,7 +8,7 @@ const HitokotoType = Object.freeze({
     "music163":     {type: "j", text: "网易云",},
     "game":         {type: "c", text: "游戏",},
     "original":     {type: "e", text: "原创",},
-    "internet":     {type: "f", text: "来自网络",},
+    "internet":     {type: "f", text: "网络",},
     "shake_clever": {type: "l", text: "抖机灵",},
     "other":        {type: "g", text: "其他",},
 });

@@ -78,13 +78,15 @@
         }catch(error){
             host = ""
         }
-        let total_num = 0
+        let total_num = 1
         function add_script(path, callback){
             total_num = total_num + 1
             if(host != "" && !path.startsWith("/")){ path = "/" + path }
             let script_element = document.createElement("script")
             script_element.src = host + path
-            script_element.onload = callback
+            if(callback){
+                script_element.onload = callback
+            }
             document.body.appendChild(script_element)
         }
         let resolve
@@ -94,7 +96,7 @@
             reject = _resolve
         });
 
-        let load_num = 1
+        let load_num = 0
         function onload(){
             load_num = load_num + 1
             if(load_num == total_num){
@@ -108,7 +110,7 @@
         add_script("src/index.js", onload)
         add_script("src/siyuan_api.js", onload)
 
-        onload() // load_num初始1，即使上面同一帧立马执行也不会调用resolve，这里调一次抵消初始1
+        onload() // total_num初始1，即使上面同一帧立马执行也不会调用resolve，这里调一次抵消初始1
         promise.then(() => {
             add_script("launcher.js")
         })

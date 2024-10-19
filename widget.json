@@ -1,7 +1,7 @@
 {
   "name": "OneSentence",
-  "author": "Gbg",
-  "url": "",
+  "author": "CeFrumoasaEIubirea",
+  "url": "https://github.com/Frankgbg/OneSentence",
   "version": "0.0.1",
   "minAppVersion": "3.1.9",
   "displayName": {
@@ -9,8 +9,8 @@
     "zh_CN": "一言"
   },
   "description": {
-    "default": "This is a random quote widget",
-    "zh_CN": "这是一个随机语录挂件"
+    "default": "This is a random quote widget.",
+    "zh_CN": "这是一个随机语录挂件。"
   },
   "readme": {
     "default": "README.md"
@@ -22,7 +22,7 @@
     "custom": []
   },
   "keywords": [
-    "一言", "语录", "随机"
+    "一言", "语录", "随机", "one", "sentence", "random"
   ]
 }
 

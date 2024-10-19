@@ -52,7 +52,6 @@
     const menuButton = document.getElementById('menu')
     // 点击按钮时显示设置菜单
     menuButton.addEventListener('click', function(event) {
-        // 阻止事件冒泡
         event.stopPropagation()
         if (setting_container.style.display === 'none' || setting_container.style.display === '') {
             setting_container.style.display = 'flex' // 显示设置
