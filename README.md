@@ -9,7 +9,7 @@
 ## 🍴使用
 1. 从思源集市下载或者自己下载将文件夹放在{思源工作空间}/data/widgets/下
 2. 如果不只是本机使用，自己部署了服务器，需要在config.js中填写服务器地址siyuan_host
-3. 如果自己部署设置了访问授权码，需要在config.js中填写自己的授权码siyuan_token，或设置->关于里的token
+3. 如果自己部署了服务器，需要在config.js中填写自己的鉴权码siyuan_token，设置->关于里的token
 4. 刷新网页试试吧
 
 

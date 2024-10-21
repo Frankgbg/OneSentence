@@ -6,6 +6,7 @@
     <title>One Sentence</title>
     <link href="css/index.css" rel="stylesheet">
     <script>
+        // 全局操作dom接口
         function set_link_click(bool){
             let hitokoto_label = document.getElementById("hitokoto_label")
             let author_label = document.getElementById("author_label")
@@ -13,28 +14,40 @@
             author_label.style.pointerEvents = bool ? "visible" : "none"
         }
 
-        function is_link_click(){
+        function can_link_click(){
             const link_option_checkbox = document.getElementById("link_option_checkbox")
             return link_option_checkbox.checked
         }
-
-        function check_color_hex3(color){
-            let result = color.match(/^#[0-9a-fA-F]{6}$/)
-            if(result != null) result = result[0]
-            return result == color
-        }
-        function check_color_hex4(color){
-            let result = color.match(/^#[0-9a-fA-F]{8}$/)
-            if(result != null) result = result[0]
-            return result == color
-        }
-        // 自己保证color是hex3或hex4，这里不管
-        function convert_to_hex3(color){
-            if(check_color_hex4(color)){
-                return color.substring(0, 7)
+        // 思源挂件的iframe容器自适应高
+        function adjust_siyuan_frame_height(){
+            if(window.frameElement){
+                const setting_container = document.getElementById("setting_container")
+                const content_container = document.getElementById("content_container")
+                let total_height = content_container ? content_container.clientHeight : 38
+                if(setting_container
+                    && setting_container.style.display != 'none'
+                    && setting_container.style.display != ''
+                ){
+                    let height = setting_container.offsetHeight + 31
+                    total_height = Math.max(total_height, height)
+                }
+                // 应该是思源的iframe有边框，差2
+                total_height = total_height + 2
+                // 高自适应
+                window.frameElement.style.minHeight = total_height + "px"
+                window.frameElement.style.maxHeight = total_height + "px"
             }
-            return color
         }
+        // 提前时机，但没有手动修改过大小的情况下还是有一帧会变成最大，这个应该是思源重新渲染iframe的问题，还没走到挂件的代码
+        if(window.frameElement){
+            let min_width = 350
+            // 思源挂件的iframe容器限制最小宽
+            window.frameElement.style.minWidth = min_width + "px"
+            if(window.frameElement.style.width === ""){
+                window.frameElement.style.width = "400px"
+            }
+        }
+        adjust_siyuan_frame_height()
     </script>
 </head>
 <body>
@@ -68,9 +81,21 @@
             <a id = "author_label" href = "https://hitokoto.cn/" target="_blank"></a>
         </span>
     </span>
-
     <script type="module">
-        // 定义基础 URL 和参数
+        if(window.frameElement){
+            const observer = new ResizeObserver(entries => {
+                /*
+                    adjust_siyuan_frame_height中修改大小会报: "ResizeObserver loop completed with undelivered notifications."
+                    本来也不需要通知到ResizeObserver，忽略. 不知道有没有更好的方法自适应大小
+                */
+                adjust_siyuan_frame_height()
+            })
+            const content_container = document.getElementById("content_container")
+            observer.observe(content_container)
+        }
+
+
+        // 加载js并执行
         let host
         try{
             let pre_path = window.location.pathname.match(/(.*)\/index.html/)[1]
@@ -106,9 +131,10 @@
 
         // 这里这么写只是为了根据index的启动自动设置相同的协议和域
         add_script("config.js", onload)
+        add_script("src/util.js", onload)
         add_script("src/get_remote_res.js", onload)
-        add_script("src/index.js", onload)
         add_script("src/siyuan_api.js", onload)
+        add_script("src/index.js", onload)
 
         onload() // total_num初始1，即使上面同一帧立马执行也不会调用resolve，这里调一次抵消初始1
         promise.then(() => {
