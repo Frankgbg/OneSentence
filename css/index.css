@@ -87,12 +87,12 @@ a:hover {
     width: 122px;
 }
 #hitokoto_type_select {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 /*跳转超链接*/
 #link_option_checkbox {
-    transform: scale(1.5);
+    transform: scale(1.4);
 }
 
 /*颜色*/
