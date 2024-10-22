@@ -41,7 +41,7 @@
         // 提前时机，但没有手动修改过大小的情况下还是有一帧会变成最大，这个应该是思源重新渲染iframe的问题，还没走到挂件的代码
         if(window.frameElement){
             let min_width = 350
-            // 思源挂件的iframe容器限制最小宽
+            window.frameElement.style.borderRadius = "5px"
             window.frameElement.style.minWidth = min_width + "px"
             if(window.frameElement.style.width === ""){
                 window.frameElement.style.width = "400px"

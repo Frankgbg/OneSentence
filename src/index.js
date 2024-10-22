@@ -54,10 +54,10 @@ async function set_setting_value(key, value){
 }
 
 async function get_and_set_one_sentence(select_value){
-    function setText(labelId, text){
-        const textLabel = document.getElementById(labelId)
-        if(textLabel){
-            textLabel.innerText = text ?? ""
+    function setText(label_id, text){
+        const text_label = document.getElementById(label_id)
+        if(text_label){
+            text_label.innerText = text ?? ""
         }
     }
     const data = await fetch_hitokoto(select_value)

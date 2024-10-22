@@ -45,9 +45,9 @@
     // 选择一言类型
     select_element.addEventListener("change", function(){
         set_setting_value(OptionKey.select, this.value)
+        hide_setting()   // 隐藏设置
         get_and_set_one_sentence(this.value)
         adjust_siyuan_frame_height()
-        hide_setting()   // 隐藏设置
     })
 
     // 是否允许超链接跳转一言
