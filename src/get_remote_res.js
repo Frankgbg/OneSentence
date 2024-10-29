@@ -27,7 +27,6 @@ async function fetch_hitokoto(type_key = null) {
                 url = `${url}c=${HitokotoType[key].type}&`
             }
         })
-        console.log(url)
         const response = await fetch(url)
         if(!response.ok){
             throw new Error(`HTTP error! status: ${response.status}`)

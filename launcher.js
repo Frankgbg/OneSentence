@@ -108,6 +108,11 @@
     get_setting_values()
     .then((data) => {
         type_enable_map = data[OptionKey.select]
+        Object.entries(type_enable_map).forEach(([key, value]) => {
+            let id = get_hitokoto_type_dom_id(key)
+            const type_check_box = document.getElementById(id)
+            type_check_box.checked = value
+        })
         link_option_checkbox.checked = data[OptionKey.link]
         set_link_click(data[OptionKey.link])
         bg_color_select.value = convert_to_hex3(data[OptionKey.bg_color])
