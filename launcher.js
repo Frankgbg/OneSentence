@@ -1,17 +1,49 @@
 (function(){
-    // 动态创建下拉框选项
-    const select_element = document.getElementById('hitokoto_type_select')
+    function get_hitokoto_type_dom_id(key){
+        return "hitokoto_type_" + key
+    }
+    // 动态创建选项
+    const hitokoto_type_set = document.getElementById('hitokoto_type_set')
     Object.entries(HitokotoType).forEach(([key, value]) => {
-        const option = document.createElement('option')
-        option.value = key // 设置值为 key
-        option.textContent = value.text // 设置显示文本
-        select_element.appendChild(option) // 添加选项到下拉框
+        const checkbox = document.createElement('input')
+        checkbox.type = "checkbox"
+        checkbox.id = get_hitokoto_type_dom_id(key)
+        checkbox.value = key
+
+        const label = document.createElement('label')
+        label.appendChild(checkbox)
+        label.appendChild(document.createTextNode(value.text))
+
+        hitokoto_type_set.appendChild(label)
     })
 
+    let type_enable_map = {}
     const setting_container = document.getElementById("setting_container")
     function hide_setting(){
         setting_container.style.display = "none" // 隐藏设置
         adjust_siyuan_frame_height()
+        // 选择的一言类型
+        let changed = false
+        Object.entries(HitokotoType).forEach(([key, value]) => {
+            let id = get_hitokoto_type_dom_id(key)
+            const type_check_box = document.getElementById(id)
+            let checked = type_check_box.checked
+            let before = type_enable_map[key] ?? false
+            if(checked){
+                type_enable_map[key] = checked
+            }else{
+                delete type_enable_map[key]
+            }
+            if(checked != before){
+                changed = true
+            }
+        })
+        // 有变化才设置属性和重新请求
+        if(changed){
+            let str = concatenate_key(type_enable_map)
+            set_setting_value(OptionKey.select, str)
+            get_and_set_one_sentence(type_enable_map)
+        }
     }
     const menu_button = document.getElementById("menu")
     // 点击按钮时切换设置菜单状态
@@ -41,14 +73,6 @@
         }
     })
 
-
-    // 选择一言类型
-    select_element.addEventListener("change", function(){
-        set_setting_value(OptionKey.select, this.value)
-        hide_setting()   // 隐藏设置
-        get_and_set_one_sentence(this.value)
-        adjust_siyuan_frame_height()
-    })
 
     // 是否允许超链接跳转一言
     const link_option_checkbox = document.getElementById("link_option_checkbox")
@@ -83,7 +107,7 @@
     */
     get_setting_values()
     .then((data) => {
-        select_element.value = data[OptionKey.select]
+        type_enable_map = data[OptionKey.select]
         link_option_checkbox.checked = data[OptionKey.link]
         set_link_click(data[OptionKey.link])
         bg_color_select.value = convert_to_hex3(data[OptionKey.bg_color])
@@ -96,7 +120,7 @@
         color_input.dataset.before_value = color_input.value
         update_color()
 
-        get_and_set_one_sentence(select_element.value)
+        get_and_set_one_sentence(type_enable_map)
         adjust_siyuan_frame_height()
     })
 })()

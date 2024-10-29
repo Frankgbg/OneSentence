@@ -84,10 +84,21 @@ a:hover {
 
 /*类型*/
 #select_container {
-    width: 122px;
+    display: flex;
+    width: 215px;
 }
-#hitokoto_type_select {
-    font-size: 14px;
+#hitokoto_type_set {
+    padding: 0px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-width: 1px;
+    border-radius: 3px;
+}
+#hitokoto_type_set label {
+    font-weight: normal;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
 }
 
 /*跳转超链接*/

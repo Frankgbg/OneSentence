@@ -17,3 +17,47 @@ function convert_to_hex3(color){
     }
     return color
 }
+
+// 将map中的key用','连接
+function concatenate_key(map, sep = ','){
+    let str = ""
+    if(sep.length != 1){
+        console.error("sep 参数只能是单个字符!!!")
+        return str
+    }
+    Object.entries(map).forEach(([key, value]) => {
+        str = `${str}${key}${sep}`
+    })
+    if(str.slice(-1) === sep){
+        str = str.slice(0, -1)
+    }
+    return str
+}
+
+function force_hitokoto_type_map(value){
+    value = value ?? ""
+    value = value.split(',').filter(item =>{
+        let s = item.trim()
+        return s !== '' && HitokotoType.hasOwnProperty(s)
+    }).reduce((acc, item) => {
+        acc[item.trim()] = true
+        return acc
+    }, {})
+    return value
+}
+
+function force_bool(value, default_value){
+    value = value ?? default_value
+    if(value != "true" && value != "false"){
+        value = default_value
+    }
+    return JSON.parse(value.toLowerCase())
+}
+
+function force_color_hex(value, default_value){
+    value = value ?? default_value
+    if(!is_color_hex3(value) && !is_color_hex4(value)){
+        value = default_value
+    }
+    return value
+}

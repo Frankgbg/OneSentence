@@ -13,12 +13,21 @@ const HitokotoType = Object.freeze({
     "other":        {type: "g", text: "其他",},
 });
 
+/*
+* type_key: string|object
+*/
 async function fetch_hitokoto(type_key = null) {
     try{
-        let url = one_sentence_host
-        if(typeof type_key === "string" && HitokotoType.hasOwnProperty(type_key)){
-            url = `${url}?c=${HitokotoType[type_key].type}`
+        let url = one_sentence_host + "?"
+        if(typeof type_key === "string"){
+            type_key = {[type_key]: true}
         }
+        Object.entries(type_key).forEach(([key, value]) => {
+            if(value && HitokotoType.hasOwnProperty(key)){
+                url = `${url}c=${HitokotoType[key].type}&`
+            }
+        })
+        console.log(url)
         const response = await fetch(url)
         if(!response.ok){
             throw new Error(`HTTP error! status: ${response.status}`)

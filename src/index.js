@@ -1,43 +1,18 @@
 /*
-    index.html 复杂逻辑,公共接口
+    index.html 复杂逻辑
 */
-
-function force_hitokoto_type(value){
-    value = value ?? "poetry"
-    if(typeof value != "string" || !HitokotoType.hasOwnProperty(value)){
-        value = "poetry"
-    }
-    return value
-}
-
-function force_bool(value, default_value){
-    value = value ?? default_value
-    if(value != "true" && value != "false"){
-        value = default_value
-    }
-    return JSON.parse(value.toLowerCase())
-}
-
-function force_color_hex(value, default_value){
-    value = value ?? default_value
-    if(!is_color_hex3(value) && !is_color_hex4(value)){
-        value = default_value
-    }
-    return value
-}
-
 const OptionKey = Object.freeze({
     "select": "custom-select",
     "link": "custom-link",
     "text_color": "custom-text-color",
     "bg_color": "custom-bg-color",
 })
-let block_id = "20241022000105-i04x7xu" // 非思源中测试时改这个
+let block_id = "20241022013654-cu1a0kl" // 非思源中测试时改这个
 async function get_setting_values(){
     let _block_id = get_current_block_id() || block_id
     let data = await get_block_attr(_block_id)
     // 类型
-    data[OptionKey.select] = force_hitokoto_type(data[OptionKey.select])
+    data[OptionKey.select] = force_hitokoto_type_map(data[OptionKey.select])
     // 是否跳转超链接
     data[OptionKey.link] = force_bool(data[OptionKey.link], "false")
     data[OptionKey.text_color] = force_color_hex(data[OptionKey.text_color], "#000000")
