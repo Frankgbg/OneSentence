@@ -1,3 +1,7 @@
+## v0.0.5
+1. 修正package.js
+没有新的内容。抱歉！在v0.0.4中压缩package.zip时，config.js里包含了我的测试`siyuan_host`和`siyuan_token`。这会影响本地使用时无法将设置保存进块属性中，思源集市应该有版本的判断，即使我更新了v0.0.4中的package.zip，集市中下载的config.js依然是带有`siyuan_host`和`siyuan_token`。为此升一个版本修正package.js。
+
 ## v0.0.4
 1. 类型多选，都不选则全开，默认都不选
 
