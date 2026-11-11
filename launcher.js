@@ -126,6 +126,5 @@
         update_color()
 
         get_and_set_one_sentence(type_enable_map)
-        adjust_siyuan_frame_height()
     })
 })()

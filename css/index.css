@@ -6,6 +6,8 @@ html, body {
 
 html {
     background-color: transparent;
+    /* 非常重要:忽略滚动，不然出现滚动条，临界时会将文本挤到下一行导致自适应高失效 */
+    overflow: hidden;
 }
 
 span {

@@ -18,34 +18,41 @@
             const link_option_checkbox = document.getElementById("link_option_checkbox")
             return link_option_checkbox.checked
         }
+
+        function set_iframe_content_height(height){
+            // 思源的iframe-content有边框，差2
+            height += 2
+            window.frameElement.parentElement.style.minHeight = height + "px"
+            window.frameElement.parentElement.style.maxHeight = height + "px"
+            window.frameElement.parentElement.style.height = height + "px"
+            // 思源的NodeWidget有边框，差8
+            height += 8
+            window.frameElement.parentElement.parentElement.style.minHeight = height + "px"
+            window.frameElement.parentElement.parentElement.style.maxHeight = height + "px"
+            window.frameElement.parentElement.parentElement.style.height = height + "px"
+        }
+
         // 思源挂件的iframe容器自适应高
         function adjust_siyuan_frame_height(){
-            if(window.frameElement){
-                const setting_container = document.getElementById("setting_container")
-                const content_container = document.getElementById("content_container")
-                let total_height = content_container ? content_container.clientHeight : 38
-                if(setting_container
-                    && setting_container.style.display != 'none'
-                    && setting_container.style.display != ''
-                ){
-                    let height = setting_container.offsetHeight + 31
-                    total_height = Math.max(total_height, height)
-                }
-                // 应该是思源的iframe有边框，差2
-                total_height = total_height + 2
-                // 高自适应
-                window.frameElement.style.minHeight = total_height + "px"
-                window.frameElement.style.maxHeight = total_height + "px"
+            if(!window.frameElement) return
+
+            const setting_container = document.getElementById("setting_container")
+            const content_container = document.getElementById("content_container")
+            let total_height = content_container ? content_container.clientHeight : 38
+            if(setting_container
+                && setting_container.style.display != 'none'
+                && setting_container.style.display != ''
+            ){
+                // 25是setting_container top偏移，10是content_container的上下padding
+                let height = setting_container.offsetHeight + 25 + 10
+                total_height = Math.max(total_height, height)
             }
+            set_iframe_content_height(total_height)
         }
         // 提前时机，但没有手动修改过大小的情况下还是有一帧会变成最大，这个应该是思源重新渲染iframe的问题，还没走到挂件的代码
         if(window.frameElement){
-            let min_width = 350
             window.frameElement.style.borderRadius = "5px"
-            window.frameElement.style.minWidth = min_width + "px"
-            if(window.frameElement.style.width === ""){
-                window.frameElement.style.width = "400px"
-            }
+            window.frameElement.parentElement.parentElement.style.minWidth = "350px"
         }
         adjust_siyuan_frame_height()
     </script>
@@ -53,6 +60,7 @@
 <body>
     <span id = "content_container">
         <span id = "menu_container">
+            <label id="menu">☰</label>
             <div id = "setting_container">
                 <div id = "select_container">
                     <label>类型: </label>
@@ -73,7 +81,6 @@
                     <input id="color_input" type="text" placeholder="#000000" data-before_value = "#000000" value="#000000" spellcheck="false">
                 </div>
             </div>
-            <label id="menu">☰</label>
         </span>
 
         <span id = "text_content_container">
@@ -83,12 +90,20 @@
     </span>
     <script type="module">
         if(window.frameElement){
+            let rafId = 0
+            let resizeDirty = false
             const observer = new ResizeObserver(entries => {
-                /*
-                    adjust_siyuan_frame_height中修改大小会报: "ResizeObserver loop completed with undelivered notifications."
-                    本来也不需要通知到ResizeObserver，忽略. 不知道有没有更好的方法自适应大小
-                */
-                adjust_siyuan_frame_height()
+                resizeDirty = true
+                if(rafId) return
+
+                rafId = requestAnimationFrame(() => {
+                    rafId = 0
+                    if(!resizeDirty) return
+                    adjust_siyuan_frame_height()
+                    requestAnimationFrame(() => {
+                        resizeDirty = false
+                    })
+                })
             })
             const content_container = document.getElementById("content_container")
             observer.observe(content_container)
